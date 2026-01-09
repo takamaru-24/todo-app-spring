@@ -1,38 +1,96 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>ToDo List</title>
-
-    <!-- ③ CSSの読み込み -->
-    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+	<meta charset="UTF-8">
+	<title>ToDo List</title>
+	<link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
+
 <body>
-	<a th:href="@{/todo/create}">新規追加</a>
-<table border="1">
-    <tr>
-        <th>id</th>
-        <th>件名</th>
-        <th>重要度</th>
-        <th>緊急度</th>
-        <th>期限</th>
-        <th>完了</th>
-    </tr>
 
-    <!-- ① todoList を1件ずつ取り出す -->
-    <tr th:each="todo : ${todoList}">
-        <td th:text="${todo.id}"></td>
-        <td th:text="${todo.title}"></td>
 
-        <!-- ② 条件演算子 -->
-        <td th:text="${todo.importance == 1 ? '★★★' : '★'}"></td>
-        <td th:text="${todo.urgency == 1 ? '★★★' : '★'}"></td>
+	<form th:action="@{/todo/query}" method="post" th:object="${todoQuery}">
 
-        <td th:text="${todo.deadline}"></td>
-        <td th:text="${todo.done == 'Y' ? '完了' : ''}"></td>
-    </tr>
+		<table border="1">
+			<tr>
+				<th>件名</th>
+				<th>重要度</th>
+				<th>緊急度</th>
+				<th>期限</th>
+				<th>完了</th>
+			</tr>
 
-</table>
+			<trtr>
+				<td>
+					<input type="text" th:field="*{title}" size="40">
+				</td>
+
+				<td>
+					<select th:field="*{importance}">
+						<option value="-1">-</option>
+						<option value="1">高</option>
+						<option value="0">低</option>
+					</select>
+				</td>
+
+				<td>
+					<select th:field="*{urgency}">
+						<option value="-1">-</option>
+						<option value="1">高</option>
+						<option value="0">低</option>
+					</select>
+				</td>
+
+				<td>
+					<input type="text" th:field="*{deadlineFrom}" size="10" placeholder="yyyy-MM-dd">
+					～
+					<input type="text" th:field="*{deadlineTo}" size="10" placeholder="yyyy-MM-dd">
+				</td>
+
+				<td>
+					<input type="checkbox" th:field="*{done}" value="Y">完了
+				</td>
+				</tr>
+		</table>
+
+		<button type="submit">検索</button>
+
+		<div th:if="${#fields.hasErrors('deadlineFrom')}" th:errors="*{deadlineFrom}" class="red"></div>
+
+		<div th:if="${#fields.hasErrors('deadlineTo')}" th:errors="*{deadlineTo}" class="red"></div>
+
+	</form>
+	<hr>
+	<!-- 新規追加：リンク → ボタン -->
+	<form th:action="@{/todo/create}" method="get">
+		<button type="submit">新規追加</button>
+	</form>
+
+	<table border="1">
+		<tr>
+			<th>ID</th>
+			<th>件名</th>
+			<th>重要度</th>
+			<th>緊急度</th>
+			<th>期限</th>
+			<th>完了</th>
+		</tr>
+
+		<tr th:each="todo : ${todoList}">
+			<td th:text="${todo.id}"></td>
+			<td>
+				<a th:href="@{/todo/{id}(id=${todo.id})}" th:text="${todo.title}">
+				</a>
+			</td>
+
+			<td th:text="${todo.importance == 1 ? '★★★' : '★'}"></td>
+			<td th:text="${todo.urgency == 1 ? '★★★' : '★'}"></td>
+			<td th:text="${todo.deadline}"></td>
+			<td th:text="${todo.done == 'Y' ? '完了' : ''}"></td>
+		</tr>
+	</table>
 
 </body>
+
 </html>
