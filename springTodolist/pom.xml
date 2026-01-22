@@ -78,7 +78,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-	</dependencies>
+
+<!-- Source: https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-jpamodelgen -->
+<dependency>
+    <groupId>org.hibernate.orm</groupId>
+    <artifactId>hibernate-jpamodelgen</artifactId>
+    <version>6.1.5.Final</version>
+</dependency>
+</dependencies>
 
 	<build>
 		<plugins>
@@ -91,6 +98,7 @@
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 						</path>
+						
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
@@ -108,5 +116,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-</project>
+	
+	</project>
